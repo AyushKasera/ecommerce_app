@@ -1,5 +1,4 @@
 import 'dart:typed_data';
-
 import 'package:ecommerce_app/const.dart';
 import 'package:ecommerce_app/controllers/auth_controller.dart';
 import 'package:ecommerce_app/views/screens/auth/login_screen.dart';
@@ -21,12 +20,33 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final TextEditingController passwordController = TextEditingController();
 
   Uint8List? _image;
-
+  bool _isLoading = false;
   selectImage() async {
     Uint8List im = await AuthController().pickImage(ImageSource.gallery);
     setState(() {
       _image = im;
     });
+  }
+
+  signUpUser() async {
+    setState(() {
+      _isLoading = true;
+    });
+    String res = await AuthController().signUpUser(
+        fullNameController.text,
+        usernameController.text,
+        emailController.text,
+        passwordController.text,
+        _image);
+    setState(() {
+      _isLoading = false;
+    });
+    if (res != "success") {
+      return showSnackBar(res, context);
+    } else {
+      return showSnackBar(
+          'Congratulations account has been created for you ', context);
+    }
   }
 
   @override
@@ -111,6 +131,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 height: 20,
               ),
               TextField(
+                obscureText: true,
                 controller: passwordController,
                 decoration: InputDecoration(
                   filled: true,
@@ -134,22 +155,26 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 ),
                 child: Center(
                     child: InkWell(
-                  onTap: () async {
-                    await AuthController().signUpUser(
-                        fullNameController.text,
-                        usernameController.text,
-                        emailController.text,
-                        passwordController.text,
-                        _image);
+                  onTap: () {
+                    signUpUser();
+                    fullNameController.clear();
+                    usernameController.clear();
+                    emailController.clear();
+                    passwordController.clear();
+                    _image!.clear();
                   },
-                  child: Text(
-                    'Register',
-                    style: TextStyle(
-                      color: textButtonColor,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20,
-                    ),
-                  ),
+                  child: _isLoading
+                      ? Center(
+                          child: CircularProgressIndicator(color: Colors.white),
+                        )
+                      : Text(
+                          'Register',
+                          style: TextStyle(
+                            color: textButtonColor,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 20,
+                          ),
+                        ),
                 )),
               ),
               SizedBox(

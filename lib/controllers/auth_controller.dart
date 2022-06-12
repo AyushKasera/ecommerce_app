@@ -1,8 +1,8 @@
 import 'dart:typed_data';
-
 import 'package:ecommerce_app/const.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
 class AuthController {
@@ -46,7 +46,7 @@ class AuthController {
         UserCredential cred = await firebaseAuth.createUserWithEmailAndPassword(
             email: email, password: password);
 
-      String downloadUrl=await  _uploadImageToStorage(image);
+        String downloadUrl = await _uploadImageToStorage(image);
 
         await fiebaseStore.collection('users').doc(cred.user!.uid).set({
           'fullName': full_name,
@@ -55,7 +55,7 @@ class AuthController {
           'image': downloadUrl,
         });
         print(cred.user!.email);
-        res = 'sucess';
+        res = 'success';
       } else {
         res = 'please fields must not be empty';
       }
@@ -65,4 +65,26 @@ class AuthController {
 
     return res;
   }
+
+//funtion to login Users
+  loginUsers(String email, String password) async {
+    String res = 'Some error occured';
+    try {
+      if (email.isNotEmpty && password.isNotEmpty) {
+        await firebaseAuth.signInWithEmailAndPassword(
+            email: email, password: password);
+        res = 'success';
+        print('you are now logged in');
+      } else {
+        res = 'please fields must not be empty';
+      }
+    } catch (e) {
+      res = e.toString();
+    }
+    return res;
+  }
+}
+
+showSnackBar(String contant, BuildContext context) {
+  ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(contant)));
 }
