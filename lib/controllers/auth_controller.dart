@@ -16,7 +16,7 @@ class AuthController {
         UserCredential cred = await firebaseAuth.createUserWithEmailAndPassword(
             email: email, password: password);
         print(cred.user!.email);
-        res = 'sucessed';
+        res = 'sucess';
       } else {
         res = 'please fields must not be empty';
       }
