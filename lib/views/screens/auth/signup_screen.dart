@@ -139,7 +139,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         fullNameController.text,
                         usernameController.text,
                         emailController.text,
-                        passwordController.text);
+                        passwordController.text,
+                        _image);
                   },
                   child: Text(
                     'Register',
