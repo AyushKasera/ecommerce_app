@@ -1,6 +1,7 @@
 import 'package:ecommerce_app/const.dart';
 import 'package:ecommerce_app/controllers/auth_controller.dart';
 import 'package:ecommerce_app/views/screens/auth/bottom_navbar.dart';
+import 'package:ecommerce_app/views/screens/auth/forgot_screen.dart';
 import 'package:ecommerce_app/views/screens/auth/signup_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -122,6 +123,19 @@ class _LoginScreenState extends State<LoginScreen> {
                     )),
               )
             ],
+          ),
+          SizedBox(
+            height: 10,
+          ),
+          InkWell(
+            onTap: () {
+              Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) => ForgotPassword()));
+            },
+            child: Text(
+              'Forgot Password?',
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+            ),
           )
         ],
       ),

@@ -85,6 +85,22 @@ class AuthController {
   }
 }
 
+forgotPassword(String email) {
+  String res = 'some error occurd';
+  try {
+    if (email.isNotEmpty) {
+      firebaseAuth.sendPasswordResetEmail(email: email);
+      res = 'success';
+    } else {
+      res = 'Email field must not be empty';
+    }
+  } catch (e) {
+    res = e.toString();
+    print(e);
+  }
+  return res;
+}
+
 showSnackBar(String contant, BuildContext context) {
   ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(contant)));
 }
