@@ -83,22 +83,22 @@ class AuthController {
     }
     return res;
   }
-}
 
-forgotPassword(String email) {
-  String res = 'some error occurd';
-  try {
-    if (email.isNotEmpty) {
-      firebaseAuth.sendPasswordResetEmail(email: email);
-      res = 'success';
-    } else {
-      res = 'Email field must not be empty';
+  forgotPassword(String email) async {
+    String res = 'some error occurd';
+    try {
+      if (email.isNotEmpty) {
+        await firebaseAuth.sendPasswordResetEmail(email: email);
+        res = 'success';
+        print('A reset link has been sent to your email ');
+      } else {
+        res = 'Email field must not be empty';
+      }
+    } catch (e) {
+      res = e.toString();
     }
-  } catch (e) {
-    res = e.toString();
-    print(e);
+    return res;
   }
-  return res;
 }
 
 showSnackBar(String contant, BuildContext context) {

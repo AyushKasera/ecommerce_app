@@ -1,8 +1,29 @@
+import 'package:ecommerce_app/controllers/auth_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:ecommerce_app/const.dart';
 
-class ForgotPassword extends StatelessWidget {
-  const ForgotPassword({Key? key}) : super(key: key);
+class ForgotPassword extends StatefulWidget {
+  @override
+  State<ForgotPassword> createState() => _ForgotPasswordState();
+}
+
+class _ForgotPasswordState extends State<ForgotPassword> {
+  final TextEditingController _emailController = TextEditingController();
+  bool _isLoading = false;
+  forgotPassword() async {
+    setState(() {
+      _isLoading = true;
+    });
+    String res = await AuthController().forgotPassword(_emailController.text);
+    setState(() {
+      _isLoading = false;
+    });
+    if (res == 'success') {
+      return showSnackBar('Link has been sent to the email address', context);
+    } else {
+      return showSnackBar(res, context);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -19,6 +40,7 @@ class ForgotPassword extends StatelessWidget {
             height: 30,
           ),
           TextField(
+            controller: _emailController,
             decoration: InputDecoration(
                 filled: true,
                 hintText: 'Enter Your Email',
@@ -37,15 +59,19 @@ class ForgotPassword extends StatelessWidget {
             ),
             child: Center(
               child: InkWell(
-                onTap: () {},
-                child: Text(
-                  'Login',
-                  style: TextStyle(
-                    color: textButtonColor,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 20,
-                  ),
-                ),
+                onTap: forgotPassword,
+                child: _isLoading
+                    ? Center(
+                        child: CircularProgressIndicator(color: Colors.white),
+                      )
+                    : Text(
+                        'Forget Password',
+                        style: TextStyle(
+                          color: textButtonColor,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20,
+                        ),
+                      ),
               ),
             ),
           ),
