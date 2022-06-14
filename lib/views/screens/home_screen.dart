@@ -1,3 +1,4 @@
+import 'package:ecommerce_app/views/screens/widget/customApp_bar.dart';
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -6,9 +7,10 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Text('home Screen'),
-      ),
-    );
+        body: Column(
+      children: [
+        CustomAppBar(),
+      ],
+    ));
   }
 }
